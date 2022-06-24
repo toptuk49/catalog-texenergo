@@ -167,7 +167,7 @@ function showMore() {
 }
 
 // Переключение по группам
-const most_popular = document.querySelector('.most-popular-categories-container');
+var most_popular = document.querySelector('.most-popular-categories-container');
 var arr = []
 most_popular.onclick = function(e) {
     for ( let i = 0; i < all_in_categories.children.length; i++ ) {
@@ -218,11 +218,12 @@ most_popular.onclick = function(e) {
     }
 }
 
-const all_in_categories = document.querySelector('#in_categories');
+var all_in_categories = document.querySelector('#in_categories');
 var arr = []
 all_in_categories.onclick = function(e) {
     for ( let i = 0; i < most_popular.children.length; i++ ) {
         most_popular.children[i].classList.remove('selected-category');
+        arr[i] = most_popular.children[i].className;
     }
 
     for ( let i = 0; i < all_in_categories.children.length; i++ ) {
@@ -280,6 +281,86 @@ function changeTrack(e) {
 dropdownmedia.addListener(changeTrack);
 changeTrack(dropdownmedia);
 
+const banner = window.matchMedia('(max-width: 768px)');
+
+window.onload = function() {
+    if (banner.matches) {
+        document.querySelector('.main-banner-webp').srcset = "img/main-banner-low-res.webp";
+        document.querySelector('.main-banner-img').src = "img/main-banner-low-res.jpg";
+    }
+}
+
+function changeBanner(e) {
+    if (e.matches) {
+        document.querySelector('.main-banner-webp').srcset = "img/main-banner-low-res.webp";
+        document.querySelector('.main-banner-img').src = "img/main-banner-low-res.jpg";
+    }
+}
+
+banner.addListener(changeBanner);
+changeTrack(banner);
+
+// Поиск в шапке документа
+const search = window.matchMedia('(max-width: 556px)');
+
+window.onload = function() {
+    if (search.matches) {
+        let search_input = document.querySelector('.search-input');
+        let search_container = document.querySelector('.search-container');
+        let bottom_header = document.querySelector('.bottom-header-container');
+        search_input.classList.add('media-hide');
+        document.querySelector('.search-button').addEventListener('click', function() {
+            let nav = document.querySelector('.bottom-header-nav');
+            if ( search_input.classList.contains('media-hide') && search.matches ) {
+                search_input.classList.remove('media-hide');
+                search_container.style.width = '100%';
+                bottom_header.classList.add('to-search');
+
+                nav.classList.add('media-hide');
+            } else {
+                search_input.classList.add('media-hide');
+                search_container.style.width = '50%';
+                bottom_header.classList.remove('to-search');
+
+                nav.classList.remove('media-hide');
+            }
+        });
+    } else {
+
+    }
+}
+
+function spawnSearch(e) {
+    if (e.matches) {
+        let search_input = document.querySelector('.search-input');
+        let search_container = document.querySelector('.search-container');
+        let bottom_header = document.querySelector('.bottom-header-container');
+        search_input.classList.add('media-hide');
+        document.querySelector('.search-button').addEventListener('click', function() {
+            let nav = document.querySelector('.bottom-header-nav');
+            if ( search_input.classList.contains('media-hide') && e.matches ) {
+                search_input.classList.remove('media-hide');
+                search_container.style.width = '100%';
+                bottom_header.classList.add('to-search');
+
+                nav.classList.add('media-hide');
+            } else {
+                search_input.classList.add('media-hide');
+                search_container.style.width = '50%';
+                bottom_header.classList.remove('to-search');
+
+                nav.classList.remove('media-hide');
+            }
+        });
+    } else {
+
+    }
+}
+
+search.addListener(spawnSearch);
+spawnSearch(search);
+
+// Выпадающие списки
 document.querySelector('.top-header-dropdown').addEventListener('click', function() {
     let dropdown = document.querySelector('.top-header-dropdown-items-container');
     if ( dropdown.style.display == 'block' ) {
