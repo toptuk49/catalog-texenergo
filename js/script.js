@@ -283,82 +283,46 @@ changeTrack(dropdownmedia);
 
 const banner = window.matchMedia('(max-width: 768px)');
 
-window.onload = function() {
-    if (banner.matches) {
-        document.querySelector('.main-banner-webp').srcset = "img/main-banner-low-res.webp";
-        document.querySelector('.main-banner-img').src = "img/main-banner-low-res.jpg";
-    }
-}
-
 function changeBanner(e) {
     if (e.matches) {
         document.querySelector('.main-banner-webp').srcset = "img/main-banner-low-res.webp";
         document.querySelector('.main-banner-img').src = "img/main-banner-low-res.jpg";
+    } else {
+        document.querySelector('.main-banner-webp').srcset = "img/main-banner.webp";
+        document.querySelector('.main-banner-img').src = "img/main-banner.jpg";
     }
 }
 
 banner.addListener(changeBanner);
-changeTrack(banner);
+changeBanner(banner);
 
 // Поиск в шапке документа
 const search = window.matchMedia('(max-width: 556px)');
+var nav = document.querySelector('.bottom-header-nav');
+var search_input = document.querySelector('.search-input');
 
-window.onload = function() {
-    if (search.matches) {
-        let search_input = document.querySelector('.search-input');
-        let search_container = document.querySelector('.search-container');
-        let bottom_header = document.querySelector('.bottom-header-container');
-        search_input.classList.add('media-hide');
-        document.querySelector('.search-button').addEventListener('click', function() {
-            let nav = document.querySelector('.bottom-header-nav');
-            if ( search_input.classList.contains('media-hide') && search.matches ) {
-                search_input.classList.remove('media-hide');
-                search_container.style.width = '100%';
-                bottom_header.classList.add('to-search');
-
-                nav.classList.add('media-hide');
-            } else {
-                search_input.classList.add('media-hide');
-                search_container.style.width = '50%';
-                bottom_header.classList.remove('to-search');
-
-                nav.classList.remove('media-hide');
-            }
-        });
+function toggleSearch() {
+    if ( search_input.classList.contains('media-hide') && !nav.classList.contains('media-hide') ) {
+        search_input.classList.remove('media-hide');
+        nav.classList.add('media-hide');
     } else {
-
+        search_input.classList.add('media-hide');
+        nav.classList.remove('media-hide');
     }
 }
 
-function spawnSearch(e) {
+function mediaSearch(e) {
     if (e.matches) {
-        let search_input = document.querySelector('.search-input');
-        let search_container = document.querySelector('.search-container');
-        let bottom_header = document.querySelector('.bottom-header-container');
         search_input.classList.add('media-hide');
-        document.querySelector('.search-button').addEventListener('click', function() {
-            let nav = document.querySelector('.bottom-header-nav');
-            if ( search_input.classList.contains('media-hide') && e.matches ) {
-                search_input.classList.remove('media-hide');
-                search_container.style.width = '100%';
-                bottom_header.classList.add('to-search');
-
-                nav.classList.add('media-hide');
-            } else {
-                search_input.classList.add('media-hide');
-                search_container.style.width = '50%';
-                bottom_header.classList.remove('to-search');
-
-                nav.classList.remove('media-hide');
-            }
-        });
+        nav.classList.remove('media-hide');
     } else {
-
+        search_input.classList.remove('media-hide');
+        nav.classList.add('media-hide');
     }
 }
 
-search.addListener(spawnSearch);
-spawnSearch(search);
+search.addListener(mediaSearch);
+mediaSearch(search);
 
 // Выпадающие списки
 document.querySelector('.top-header-dropdown').addEventListener('click', function() {
