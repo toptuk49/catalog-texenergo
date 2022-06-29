@@ -65,37 +65,43 @@ brands_list - display flex
 group etc - display flex
 */
 
+const select1media = window.matchMedia('(max-width: 320px)');
+const select1media2 = window.matchMedia('(max-width: 320px)');
 
-function select1() {
+brands.addEventListener('click', function select1(e) {
+    group_and_category_buttons.style.display = 'none';
     if (brands.classList.contains('selected')) {
-        if ( window.innerWidth >= 576) {
+        if ( window.innerWidth > 329) {
             group_and_category_buttons.style.display = 'flex';
-        } else {
-            group_and_category_buttons.style.display = 'none';
         }
         brands_keyboard.style.display = 'none';
         brands_list.style.display = 'none';
         brands.classList.remove('selected');
         group.classList.add('selected');
-        popular.style.display = '';
-        all_categories.style.display = '';
     } else if (group.classList.contains('selected') || category.classList.contains('selected')) {
         if (group.classList.contains('selected')) {
             group.classList.remove('selected');
-            popular.style.display = 'none';
-            all_categories.style.display = 'none';
         } else {
             category.classList.remove('selected');
-            categories_filter.style.display = 'none';
         }
         brands.classList.add('selected');
         brands_keyboard.style.display = '';
         brands_list.style.display = '';
+    }
+});
+
+function select_media(e) {
+    if (e.matches) {
         group_and_category_buttons.style.display = 'none';
+    } else {
+        group_and_category_buttons.style.display = 'flex';
     }
 }
 
-function select2() {
+select1media.addListener(select_media);
+select_media(select1media);
+
+group.addEventListener('click', function select2() {
     if (group.classList.contains('selected')) {
         return;
     } else if (brands.classList.contains('selected') || category.classList.contains('selected')) {
@@ -111,9 +117,9 @@ function select2() {
         popular.style.display = '';
         all_categories.style.display = '';
     }
-}
+});
 
-function select3() {
+category.addEventListener('click', function select3() {
     if (category.classList.contains('selected')) {
         return;
     } else if (brands.classList.contains('selected') || group.classList.contains('selected')) {
@@ -129,7 +135,7 @@ function select3() {
         category.classList.add('selected');
         categories_filter.style.display = 'block';
     }
-}
+});
 
 // Клик по клавише
 var keys = document.querySelectorAll('.key');
@@ -143,27 +149,71 @@ for ( let i = 0; i < keys.length; i++ ) {
     }
 }
 
-function cleanKey() {
+const sortmedia = window.matchMedia('(max-width: 810px)');
+var sort_container = document.querySelector('.brands-sort-container');
+var sort_count = document.querySelector('.brands-sort');
+function sort_media(e) {
+    document.querySelector('.apply-button').addEventListener('click', function sort() {
+        let checkboxes = document.querySelectorAll('.brands-list-checkbox:checked');
+        let c = checkboxes.length;
+        sort_count.innerHTML = 'Отобрано брендов: ' + c;
+        brands.addEventListener('click', function() {
+            if ( c > 0 && ( sort_container.style.display == '' || sort_container.style.display == 'none' ) && !brands.classList.contains('selected') ) {
+                sort_container.style.display = 'flex';
+            } else {
+                if ( brands.classList.contains('selected') ) {
+                    sort_container.style.display = 'none';
+                }
+            }
+        });
+    });
+
+    if (e.matches) {
+        sort_container.style.flexDirection = 'column';
+    } else {
+        sort_container.style.flexDirection = 'row';
+    }
+}
+
+sortmedia.addListener(sort_media);
+sort_media(sortmedia);
+
+
+document.querySelector('.clean-button').addEventListener('click', function cleanKey() {
     for ( let i = 0; i < keys.length; i++ ) {
         keys[i].classList.remove('selected-key');
     }
-}
+
+    // Снятие галочек с выбранных чекбоксов
+    let checkboxes = document.getElementsByClassName('brands-list-checkbox');
+    for ( let i = 0; i < checkboxes.length; i++ ) {
+        checkboxes[i].checked = false;
+    }
+    brands.addEventListener('click', function() {
+        if ( !brands.classList.contains('selected') ) {
+            sort_container.style.display = 'none';
+        }
+    });
+    sort_count.innerHTML = '';
+});
+
+document.querySelector('.sort-clean-button').addEventListener('click', function() {
+    let checkboxes = document.getElementsByClassName('brands-list-checkbox');
+    for ( let i = 0; i < checkboxes.length; i++ ) {
+        checkboxes[i].checked = false;
+    }
+    sort_container.style.display = 'none';
+    sort_count.innerHTML = '';
+});
 
 // Показать больше
 function showMore() {
     let show_button = document.querySelector('.media-show-more-button');
     let categories_grid = document.querySelector('.all-categories-grid').getElementsByClassName('grid-item');
-    if ( show_button.innerHTML == 'Скрыть' ) {
-        show_button.innerHTML = 'Показать больше';
-        for ( let i = 9; i < 16; i++ ) {
-            categories_grid[i].style.display = '';
-        }
-    } else {
-        show_button.innerHTML = 'Скрыть';
-        for ( let i = 9; i < 16; i++ ) {
-            categories_grid[i].style.display = 'block';
-        } 
+    for ( let i = 9; i < 16; i++ ) {
+        categories_grid[i].style.display = 'block';
     }
+    document.querySelector('.media-show-more-button-container').parentNode.removeChild(document.querySelector('.media-show-more-button-container'));
 }
 
 // Переключение по группам
@@ -270,11 +320,13 @@ all_in_categories.onclick = function(e) {
 }
 
 // @media
-const dropdownmedia = window.matchMedia('(max-width: 992px)');
+const dropdownmedia = window.matchMedia('(max-width: 600px)');
 
 function changeTrack(e) {
     if (e.matches) {
         document.querySelector('.bottom-header-dropdown-text').innerHTML = 'Ещё';
+    } else {
+        document.querySelector('.bottom-header-dropdown-text').innerHTML = 'Показать ещё';
     }
 }
 
@@ -297,11 +349,12 @@ banner.addListener(changeBanner);
 changeBanner(banner);
 
 // Поиск в шапке документа
-const search = window.matchMedia('(max-width: 556px)');
+const search = window.matchMedia('(max-width: 478px)');
 var nav = document.querySelector('.bottom-header-nav');
 var search_input = document.querySelector('.search-input');
+var search_container = document.querySelector('.search-container');
 
-function toggleSearch() {
+document.querySelector('.search-button').addEventListener('click', function toggleSearch() {
     if ( search_input.classList.contains('media-hide') && !nav.classList.contains('media-hide') ) {
         search_input.classList.remove('media-hide');
         nav.classList.add('media-hide');
@@ -309,7 +362,7 @@ function toggleSearch() {
         search_input.classList.add('media-hide');
         nav.classList.remove('media-hide');
     }
-}
+});
 
 function mediaSearch(e) {
     if (e.matches) {
@@ -361,7 +414,7 @@ document.querySelector('.second-bottom-call-dropdown').addEventListener('click',
     }
 });
 
-function header_burger_dropdown() {
+document.querySelector('.top-header-burger-dropdown').addEventListener('click', function() {
     let dropdown = document.querySelector('.top-header-burger-dropdown'); 
     if ( document.querySelector('.top-header-burger-dropdown').classList.contains('selected-burger') ) {
         document.querySelector('.top-header-burger-dropdown').classList.remove('selected-burger');
@@ -374,13 +427,22 @@ function header_burger_dropdown() {
     } else {
         header_burger_dropdown.style.display = 'none';
     }
-}
+});
 
-function b_dropdown() {
+document.querySelector('.bottom-header-dropdown').addEventListener('click', function() {
     let b_dropdown = document.querySelector('.bottom-header-dropdown-items-container');
     if ( b_dropdown.style.display == 'none' ) {
         b_dropdown.style.display = 'block';
     } else {
         b_dropdown.style.display = 'none';
     }
-}
+});
+
+document.querySelector('.bottom-header-nav-button').addEventListener('click', function() {
+    let button = document.querySelector('.header-categories-dropdown')
+    if ( button.style.display == 'none' ) {
+        button.style.display = 'flex';
+    } else {
+        button.style.display = 'none';
+    }
+});
