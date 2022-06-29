@@ -207,14 +207,14 @@ document.querySelector('.sort-clean-button').addEventListener('click', function(
 });
 
 // Показать больше
-function showMore() {
+document.querySelector('.media-show-more-button').addEventListener('click', function() {
     let show_button = document.querySelector('.media-show-more-button');
     let categories_grid = document.querySelector('.all-categories-grid').getElementsByClassName('grid-item');
     for ( let i = 9; i < 16; i++ ) {
         categories_grid[i].style.display = 'block';
     }
     document.querySelector('.media-show-more-button-container').parentNode.removeChild(document.querySelector('.media-show-more-button-container'));
-}
+}); 
 
 // Переключение по группам
 var most_popular = document.querySelector('.most-popular-categories-container');
