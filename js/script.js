@@ -83,6 +83,7 @@ brands.addEventListener('click', function select1(e) {
             group.classList.remove('selected');
         } else {
             category.classList.remove('selected');
+            categories_filter.style.display = 'none';
         }
         brands.classList.add('selected');
         brands_keyboard.style.display = '';
@@ -129,8 +130,8 @@ category.addEventListener('click', function select3() {
             brands_list.style.display = 'none';
         } else {
             group.classList.remove('selected');
-            popular.style.display = 'none';
-            all_categories.style.display = 'none';
+            popular.style.display = '';
+            all_categories.style.display = '';
         }
         category.classList.add('selected');
         categories_filter.style.display = 'block';
