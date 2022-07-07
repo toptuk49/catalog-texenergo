@@ -543,22 +543,3 @@ function changeBanner(e) {
 
 banner.addListener(changeBanner);
 changeBanner(banner);
-
-// Выпадающие списки
-document.querySelector('.first-bottom-call-dropdown').addEventListener('click', function() {
-    let dropdown = document.querySelector('.first-bottom-call-dropdown-items-container');
-    if ( dropdown.style.display == 'block' ) {
-        dropdown.style.display = 'none';
-    } else {
-        dropdown.style.display = 'block';
-    }
-});
-
-document.querySelector('.second-bottom-call-dropdown').addEventListener('click', function() {
-    let dropdown = document.querySelector('.second-bottom-call-dropdown-items-container');
-    if ( dropdown.style.display == 'block' ) {
-        dropdown.style.display = 'none';
-    } else {
-        dropdown.style.display = 'block';
-    }
-});
